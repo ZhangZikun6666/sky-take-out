@@ -87,12 +87,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         //设置默认密码
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
 
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
-
-        employee.setCreateUser(BaseContext.getCurrentId());
-        employee.setUpdateUser(BaseContext.getCurrentId());
-
         employeeMapper.insert(employee);
     }
     /**
@@ -137,9 +131,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void update(EmployeeDTO employeeDTO) {
         Employee employee=new Employee();
         BeanUtils.copyProperties(employeeDTO,employee);
-
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setUpdateUser(BaseContext.getCurrentId());
+        //已经使用了autofill 这种公共字段就不用再赋值了
+//      employee.setUpdateTime(LocalDateTime.now());
+//      employee.setUpdateUser(BaseContext.getCurrentId());
         employeeMapper.update(employee);
     }
 
