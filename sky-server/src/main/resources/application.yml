@@ -16,6 +16,11 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher
+  redis:
+    host: ${sky.redis.host}
+    port: ${sky.redis.port}
+    database: ${sky.redis.database}
+
 mybatis:
   #mapper配置文件
   mapper-locations: classpath:mapper/*.xml

@@ -101,11 +101,12 @@ public class DishServiceImpl implements DishService {
         //利用copy封装到VO对象中
         DishVO dishVO = new DishVO();
         BeanUtils.copyProperties(dish,dishVO);
-        BeanUtils.copyProperties(dishFlavor,dishVO);
+        dishVO.setFlavors(dishFlavor);
         return dishVO;
     }
 
     @Override
+    @Transactional
     public void updateWithFlavor(DishDTO dishDTO) {
         //删除菜品表基本信息
         Dish dish = new Dish();
@@ -121,6 +122,18 @@ public class DishServiceImpl implements DishService {
             });
             dishFlavorMapper.insertBatch(flavors);
         }
+    }
+
+    @Override
+    public List<Dish> getDishByCategory(Long categoryId) {
+        //为了方便以后复用 我们的xml文件使用的是对象查询法 即判断对象中可选的查询字段不为空的字段就是本次的查询字段
+        //设置status是为了查询时要保证餐品售卖中
+        Dish dish = Dish.builder().
+                categoryId(categoryId).
+                status(StatusConstant.ENABLE).
+                build();
+        List<Dish> dishes = dishMapper.list(dish);
+        return dishes;
     }
 
 
